@@ -1,0 +1,4 @@
+Graph Clustering Algorithms implementation and colouring code
+mcl.py: Markov Cluster algorithm
+k_clique.py: K-cliques percolation(from networkx library)
+cluster_coloring.py: For colouring and visualising the graph given a partition(not a cover) of clusters
