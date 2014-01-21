@@ -8,19 +8,24 @@ import sys
 NO_OF_ELEMENTS=9614
 
 def read_adjmat(filename):
+    """Read the adjacency matrix from csv file"""
     adjmat = np.loadtxt(filename,delimiter=',',skiprows=1,usecols=range(1,NO_OF_ELEMENTS+1))
     return adjmat
 
 def norm_mat(a):
+    """Normalize the matrix"""
     return a / a.sum(axis=0)[:np.newaxis]
 
 def inflate(a, i):
+    """Inflation operation"""
     return norm_mat(a ** i)
 
 def expand(a, e):
+    """Expansion operation"""
     return np.linalg.matrix_power(a, e)
 
 def mcl_clusterize(a, e, i, steps=20):
+    """MCL clustering algorithm"""
     a = norm_mat(a)
     for step in range(steps):
         a = expand(a, e)
@@ -28,6 +33,7 @@ def mcl_clusterize(a, e, i, steps=20):
     return a
 
 def interpret_clusters(a):
+    """Interpret the final matrix that MCL converges to and identify the clusters"""
     clusters=[]
     flag=[False for i in range(len(a))]
     for row in range(len(a)):
@@ -40,7 +46,7 @@ def interpret_clusters(a):
             clusters.append(clusternodes)
     return clusters         
 
-if __name__ == '__main__':
+def main():
     if len(sys.argv) == 4:
         inputfile = sys.argv[1]
         expansion_parameter, inflation_parameter = map(int, sys.argv[2:4])
@@ -51,3 +57,6 @@ if __name__ == '__main__':
     clusters = interpret_clusters(a)
     for cluster in clusters:
         print '{' + ' '.join([str(i) for i in cluster]) +'}'
+
+if __name__ == '__main__':
+    main()
